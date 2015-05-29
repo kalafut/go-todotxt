@@ -520,3 +520,24 @@ func TestTaskListReadErrors(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestTaskListBump(t *testing.T) {
+	if err := testTasklist.LoadFromFilename(testInputTasklist); err != nil {
+		t.Fatal(err)
+	}
+
+	length := len(testTasklist)
+	topBefore := testTasklist[0]
+	task := testTasklist[21]
+	err := testTasklist.BumpTask(task.Id)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if length != len(testTasklist) {
+		t.Errorf("Length mismatch. Exp: %d Act: %d", length, len(testTasklist))
+	}
+	if task != testTasklist[0] || task == testTasklist[21] || topBefore != testTasklist[1] {
+		t.Error()
+	}
+}

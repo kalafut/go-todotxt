@@ -68,12 +68,16 @@ func (tasklist TaskList) GetTask(id int) (*Task, error) {
 }
 
 // BumpTask moves an item to the top of the list
-func (tasklist *TaskList) BumpTask(id int) {
+func (tasklist *TaskList) BumpTask(id int) error {
 	task, err := tasklist.GetTask(id)
-	if err != nil {
+	if err == nil {
 		tasklist.RemoveTaskById(id)
+	} else {
+		return err
 	}
 	*tasklist = append(TaskList{task}, *tasklist...)
+
+	return nil
 }
 
 // RemoveTaskById removes any Task with given Task 'id' from the TaskList.
